@@ -17,7 +17,7 @@ Limitations:
 **Example-1**: Accepts a single nodename or multiple comma saperated nodenames as an arguement to the script.
 
 ```sh
-$eks-proxy-log-collector.sh <node_name-1>,<node_name-2>
+$curl -O https://raw.githubusercontent.com/suhas316380/eks-proxy-log-collector/master/eks-proxy-log-collector.sh | bash eks-proxy-log-collector.sh <node_name-1>,<node_name-2>
 ```
 
 If nodename(s) arguement is passed, script checks if the specified node:
@@ -29,7 +29,7 @@ $curl -s -o /dev/null -w "%{http_code}" http://localhost:${proxy_port}/api/v1/no
 
 **Example-2**:
 ```sh
-$eks-proxy-log-collector.sh
+$curl -O https://raw.githubusercontent.com/suhas316380/eks-proxy-log-collector/master/eks-proxy-log-collector.sh | bash eks-proxy-log-collector.sh
 No node names Specified..Would you like to pass 1 or more Nodenames (comma saperated values) - Yes|No|Exit ? [Y|N|E] n
 No problem.. Attempting to pull logs from all the nodes :)
 Starting kubectl proxy ..sleeping for 5 seconds
@@ -60,7 +60,7 @@ $kill -9 $(ps -ef | grep "kubectl proxy" | grep -v grep | awk '{print $2}') &>/d
 
 **Example-1**: Pull logs of a specific worker nodes
 ```
-$bash eks-proxy-log-collector.sh ip-192-168-13-15.ec2.internal
+$curl -O https://raw.githubusercontent.com/suhas316380/eks-proxy-log-collector/master/eks-proxy-log-collector.sh | bash eks-proxy-log-collector.sh ip-192-168-13-15.ec2.internal
 Starting kubectl proxy ..sleeping for 5 seconds
 Starting to serve on 127.0.0.1:8080
 Gathering logs from: http://localhost:8080/api/v1/nodes/ip-192-168-13-15.ec2.internal/proxy/logs/aws-routed-eni/
@@ -72,7 +72,7 @@ Gathering logs from: http://localhost:8080/api/v1/nodes/ip-192-168-13-15.ec2.int
 
 **Example-2**: Pull logs of all the worker nodes in the cluster
 ```
-$bash eks-proxy-log-collector.sh
+$curl -O https://raw.githubusercontent.com/suhas316380/eks-proxy-log-collector/master/eks-proxy-log-collector.sh | bash eks-proxy-log-collector.sh
 
 No node names Specified..Would you like to pass 1 or more Nodenames (comma saperated values) - Yes|No|Exit ? [Y|N|E] n
 No problem.. Attempting to pull logs from all the nodes :)
@@ -94,7 +94,7 @@ Gathering logs from: http://localhost:8080/api/v1/nodes/ip-192-168-51-176.ec2.in
 
 ### Troubleshooting
  - Make sure the correct context is set using cluster ARN and not an alias. Eg: `kubectl config use-context arn:aws:eks:us-east-1:12345678:cluster/suhas-eks`
- - If running the script on Mac, if you run into error with grep, make sure grep is up to date. Eg: `brew install grep`
+ - If running the script on Mac, if you run into error with grep, make sure to use bash interpreter: `bash eks-proxy-log-collector.sh`
 
    [eks-log-collector]: <https://github.com/nithu0115/eks-logs-collector>
    [starting a proxy to the Kubernetes API]: <https://kubernetes.io/docs/tasks/access-kubernetes-api/http-proxy-access-api/>
