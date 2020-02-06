@@ -39,13 +39,13 @@ validate()
     IFS=',' read -r -a node_names <<< "$node_names"
     for s in "${node_names[@]}"
     do
-      if echo $s | grep -qP '^ip-\d{1,3}\-\d{1,3}\-\d{1,3}\-\d{1,3}.*.internal'; then
+      if echo $s | grep -qoE '^ip-\b([0-9]{1,3}\-){3}[0-9]{1,3}\b.*.internal'; then
         status_code=$(curl -s -o /dev/null -w "%{http_code}" ${base_uri}/${s} -o /dev/null)
         if echo ${status_code} | grep -v -q '200'; then
           echo "Node Not found in context (${current_context}): run 'curl ${base_uri}/${s}' manually to check'"
           exit 0
         fi
-      elif echo $s | grep -qP '^fargate-ip-\d{1,3}\-\d{1,3}\-\d{1,3}\-\d{1,3}.*.internal'; then
+      elif echo $s | grep -qoE '^fargate-ip-\b([0-9]{1,3}\-){3}[0-9]{1,3}\b.*.internal'; then
         echo "found fargate Node - ${i} ..EKS Fargate node logging feature isn't available yet"
         exit 0
       else
@@ -98,11 +98,11 @@ for i in "${node_names[@]}"
 do
   i=$(echo $i | tr -d "\"" | tr -d "\'")
   # Skip Fargate Logs as it's not available yet
-  if echo $i | grep -qP '^fargate-ip-\d{1,3}\-\d{1,3}\-\d{1,3}\-\d{1,3}.*.internal'; then
+  if echo $i | grep -qoE '^fargate-ip-\b([0-9]{1,3}\-){3}[0-9]{1,3}\b.*.internal'; then
     echo "found fargate Node - ${i}..Skipping it as it's EKS Fargate node logging feature isn't available yet"
     continue
   # Get EC2 WorkerNode logs 
-  elif echo $i | grep -qP '^ip-\d{1,3}\-\d{1,3}\-\d{1,3}\-\d{1,3}.*.internal'; then
+  elif echo $i | grep -qoE '^ip-\b([0-9]{1,3}\-){3}[0-9]{1,3}\b.*.internal'; then
     logs_uri="${base_uri}/${i}/proxy/logs/"
     present_log_dirs=$(curl -s $logs_uri | grep -Po '(?<=href=")[^"]*(?=")')
     declare -a present_log_dirs=( $present_log_dirs )
