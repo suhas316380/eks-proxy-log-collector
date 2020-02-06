@@ -21,7 +21,7 @@ $curl -O https://raw.githubusercontent.com/suhas316380/eks-proxy-log-collector/m
 ```
 
 If nodename(s) arguement is passed, script checks if the specified node:
-1. Matches the pattern: `^ip-\d{1,3}\-\d{1,3}\-\d{1,3}\-\d{1,3}.*.internal`
+1. Matches the pattern: `^ip-\b([0-9]{1,3}\-){3}[0-9]{1,3}\b.*.internal`
 2. Belongs to the cluster based on current context (`kubectl config current-context`) by checking the status code via curl
 ```sh
 $curl -s -o /dev/null -w "%{http_code}" http://localhost:${proxy_port}/api/v1/nodes/<node_name> -o /dev/null
