@@ -1,0 +1,1 @@
+# eks-proxy-log-collector
