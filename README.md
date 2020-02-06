@@ -7,7 +7,7 @@ This interactive bash script enables us to collect IPAMd logs, /var/log/messages
 
   - kubectl, curl, jq, wget and tar
   - Required permissions to run 'kubectl proxy' command
-  - Script needs to be run on the server from where you have installed kubectl to communicate with your cluster without having to tunnel to bastion. 
+  - Script needs to be run on the server from where you have installed kubectl to communicate with your cluster without having to tunnel to bastion.
 
 Limitations:
   - Does not work with Fargate nodes
@@ -91,6 +91,10 @@ Gathering logs from: http://localhost:8080/api/v1/nodes/ip-192-168-51-176.ec2.in
 
  - Needs improvement in error handling.
  - If you are using bastion host, script does not support tunneling. This feature needs to be implemented in the script - equivalent of: `ssh -i <<Keypair>> ec2-user@<<Public_IP_Workstation>> -L 8080:127.0.0.1:8080`
+
+### Troubleshooting
+ - Make sure the correct context is set using cluster ARN and not an alias. Eg: `kubectl config use-context arn:aws:eks:us-east-1:12345678:cluster/suhas-eks`
+ - If running the script on Mac, if you run into error with grep, make sure grep is up to date. Eg: `brew install grep`
 
    [eks-log-collector]: <https://github.com/nithu0115/eks-logs-collector>
    [starting a proxy to the Kubernetes API]: <https://kubernetes.io/docs/tasks/access-kubernetes-api/http-proxy-access-api/>
